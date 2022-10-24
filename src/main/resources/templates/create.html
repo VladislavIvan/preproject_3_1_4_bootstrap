@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body style="font-family:Arial, Verdana, sans-serif">
+<h2>Create new User</h2>
+
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
+
+    <label for="username">Enter username: </label>
+    <input type="text" th:field="*{username}" id="username">
+
+    <br/>
+    <br/>
+
+    <label for="password">Enter password: </label>
+    <input type="text" th:field="*{password}" id="password">
+
+    <br/>
+    <br/>
+
+    <label for="role">Enter role (1 or 2): </label>
+    <input type="text" th:field="*{roles}" id="role">
+
+    <br/>
+    <br/>
+
+    <input type="submit" value="Create">
+</form>
+<br/>
+<br/>
+<a href="/admin/read">Read all Users</a>
+<br/>
+<br/>
+<a href="/admin/update">Update User info</a>
+<br/>
+<br/>
+<a href="/index">Log out</a>
+
+</body>
+</html>
