@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.exception.NotFoundException;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -22,6 +24,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.userRepository = userRepository;
         this.roleService = roleService;
     }
+
+    @PostConstruct
+    @Transactional
+    public void init() {
+        User admin = new User(4L, "admin", "admin"); // создаём aдмина, логин - admin
+        Role adminRole = new Role(4L, "ROLE_ADMIN"); // создаём роль АДМИН
+
+        userRepository.save(admin); // добваляем админа в базу
+        roleService.addRole(adminRole); // добавляем роль в базу
+        admin.setPassword("admin"); //пароль админа - "admin"
+        admin.addRole(adminRole); // назначем роль Админу
+        userRepository.save(admin); // сохраняем изменения в админе
 
     @Override
     public List<User> findAllUsers() {
@@ -72,5 +86,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void deleteUser(Long id) {
         userRepository.delete(findUserById(id));
     }
-
 }
